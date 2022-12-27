@@ -39,14 +39,47 @@
 // server.listen(PORT, '127.0.0.1');
 // console.log('Now listenting to server');
 
-// Readable Streams
+// Readable & Writable Streams
 
+// const http = require('http');
+
+// const fs = require('fs');
+
+// const myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
+// myReadStream.on('data', function(chunk) {
+//   console.log('new chunk recieved' );
+//   console.log(chunk); 
+// });
+
+// const http = require('http');
+// const fs = require('fs');
+// // const { ReadStream } = require('tty');
+
+// const myReadStream = fs.createReadStream(__dirname + '/readMe.txt', 'utf8');
+// const myWriteSream = fs.createWriteStream(__dirname + '/writeMe.txt');
+// myReadStream.on( 'data',function(chunk) {
+//   console.log('new chunk received');
+//   console.log(chunk);
+//   myWriteSream.write(chunk);
+// })
+
+
+
+//  Treansfering data/file to server using pipes 
 const http = require('http');
-
 const fs = require('fs');
+const PORT = 5000;
+const server = http.createServer((req,res) =>{
+console.log('Request was made' + req.url);
+res.writeHead(200,{'Content-Type' : 'text-plain'});
 
-const myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
-myReadStream.on('data', function(chunk) {
-  console.log('new chunk recieved' );
-  console.log(chunk); 
-});
+// using pipes to move files to server
+
+const myReadStream = fs.createReadStream(__dirname + 'readMe.txt','utf8');
+myWriteStream.pipe(res);
+
+// res.end('hi')
+})
+
+server.listen(PORT,'127.0.0.1');
+console.log('Now Listening to server');
