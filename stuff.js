@@ -50,7 +50,7 @@
 
 // N0 .4 Creating directories with sync
 
-const fs = require('fs');
+// const fs = require('fs');
 
 // fs.mkdirSync('apex');
 
@@ -67,9 +67,9 @@ const fs = require('fs');
 
 //no-2  removing files/directories
 
-fs.unlink('writeMe.txt', function() {
-  fs.rmdir('stuff');
-})
+// fs.unlink('writeMe.txt', function() {
+//   fs.rmdir('stuff');
+// })
 
 
 
