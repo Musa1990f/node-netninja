@@ -65,21 +65,18 @@
 
 
 
-//  Treansfering data/file to server using pipes 
+//  Transfering data/file to server us
+
 const http = require('http');
 const fs = require('fs');
-const PORT = 5000;
-const server = http.createServer((req,res) =>{
-console.log('Request was made' + req.url);
-res.writeHead(200,{'Content-Type' : 'text-plain'});
 
-// using pipes to move files to server
+const server = http.createServer(function(req,res)  {
+console.log('Request was made:' + req.url);
 
-const myReadStream = fs.createReadStream(__dirname + 'readMe.txt','utf8');
-myWriteStream.pipe(res);
+res.myWriteHead(200, {'Content-Type' : 'Text/html'});
+const myReadStream = fs.createReadStream(__dirname + '/index.html', 'utf8');
+myReadStream.pipe(res);
+});
 
-// res.end('hi')
-})
-
-server.listen(PORT,'127.0.0.1');
-console.log('Now Listening to server');
+server.listen(6000, '127.0.0.1');
+console.log('Now Listening');
