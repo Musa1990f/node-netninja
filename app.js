@@ -65,17 +65,67 @@
 
 
 
-//  Transfering data/file to server us
+//  Transfering data/html file to server us
 
+// const http = require('http');
+// const fs = require('fs');
+
+// const server = http.createServer(function(req,res)  {
+// console.log('Request was made:' + req.url);
+
+// res.myWriteHead(200, {'Content-Type' : 'Text/html'});
+// const myReadStream = fs.createReadStream(__dirname + '/index.html', 'utf8');
+// myReadStream.pipe(res);
+// });
+
+// server.listen(6000, '127.0.0.1');
+// console.log('Now Listening');
+
+
+// serving JSON data
+
+// const http = require('http'); 
+// const fs = require('fs');
+
+
+// const server = http.createServer(function(req,res)  {
+// console.log('Request was made:' + req.url);
+
+// res.myWriteHead(200, {'Content-Type' : 'application/json'});
+// const myObj = {
+//   name : 'jin',
+//   jop: 'ninja',
+//   age: 32
+// };
+// res.end(JSON.stringify(myObj));
+
+// });
+
+// server.listen(6000, '127.0.0.1');
+// console.log('Now Listening');
+
+// Basic Routing
 const http = require('http');
 const fs = require('fs');
 
 const server = http.createServer(function(req,res)  {
 console.log('Request was made:' + req.url);
+if(req.url === '/home'  || req.url === '/'){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  fs.createReadStream(__dirname + 'index.html').pipe(res)
+} else if (req.url === '/Contact'){
+res.writeHead(200,{'Content-Type' : 'text/html'});
+fs.createReadStream(___dirname + 'contact.html').pipe(res);
+}else if (req.url === 'api/ninja'){
+  const ninja = [{name: 'musa', age: 23}, {name: 'yoshi', age : 34}]
+  res.writeHead(200,{'Content-Type' : 'application/json'})
+  
+  res.end(JSON.stringify(ninja))
+} else {
+  res.writeHead(404, {'Content-Type' : 'text/html'});
+  fs.createReadStream(__dirname + '404.html').pipe(res);
+}
 
-res.myWriteHead(200, {'Content-Type' : 'Text/html'});
-const myReadStream = fs.createReadStream(__dirname + '/index.html', 'utf8');
-myReadStream.pipe(res);
 });
 
 server.listen(6000, '127.0.0.1');
