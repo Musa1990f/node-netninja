@@ -105,28 +105,59 @@
 // console.log('Now Listening');
 
 // Basic Routing
-const http = require('http');
-const fs = require('fs');
+// const http = require('http');
+// const fs = require('fs');
 
-const server = http.createServer(function(req,res)  {
-console.log('Request was made:' + req.url);
-if(req.url === '/home'  || req.url === '/'){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  fs.createReadStream(__dirname + 'index.html').pipe(res)
-} else if (req.url === '/Contact'){
-res.writeHead(200,{'Content-Type' : 'text/html'});
-fs.createReadStream(___dirname + 'contact.html').pipe(res);
-}else if (req.url === 'api/ninja'){
-  const ninja = [{name: 'musa', age: 23}, {name: 'yoshi', age : 34}]
-  res.writeHead(200,{'Content-Type' : 'application/json'})
+// const server = http.createServer(function(req,res)  {
+// console.log('Request was made:' + req.url);
+// if(req.url === '/home'  || req.url === '/'){
+//   res.writeHead(200, {'Content-Type': 'text/html'});
+//   fs.createReadStream(__dirname + 'index.html').pipe(res)
+// } else if (req.url === '/Contact'){
+// res.writeHead(200,{'Content-Type' : 'text/html'});
+// fs.createReadStream(___dirname + 'contact.html').pipe(res);
+// }else if (req.url === 'api/ninja'){
+//   const ninja = [{name: 'musa', age: 23}, {name: 'yoshi', age : 34}]
+//   res.writeHead(200,{'Content-Type' : 'application/json'})
   
-  res.end(JSON.stringify(ninja))
-} else {
-  res.writeHead(404, {'Content-Type' : 'text/html'});
-  fs.createReadStream(__dirname + '404.html').pipe(res);
-}
+//   res.end(JSON.stringify(ninja))
+// } else {
+//   res.writeHead(404, {'Content-Type' : 'text/html'});
+//   fs.createReadStream(__dirname + '404.html').pipe(res);
+// }
 
+// });
+
+// server.listen(6000, '127.0.0.1');
+// console.log('Now Listening');
+
+// EXPRESS 
+
+const express = require ('express');
+require("dotenv").config();
+
+const app = express();
+const PORT = process.env.PORT;
+
+const password = process.env.PASSWORD;
+
+// Using the ejs template of express
+app.set ('view engine', 'ejs')
+// sending html files
+ app.get('/',function(req,res) {
+  res.sendFile('__dirname' + '/index.html');
+
+ });
+
+// Routing Parameters with Express
+app.get('/profile/:name', function (req,res) {
+  // res.send('This is a request to se profile with name' + req.params.name)
+  const data = {age: 56, job: 'ninja'};
+  res.render('/profile', {person: req.params.name, data: data});
 });
 
-server.listen(6000, '127.0.0.1');
-console.log('Now Listening');
+
+ app.listen(PORT,()=>{
+  console.log(`Listening to Port ${PORT}` )
+ });
+
