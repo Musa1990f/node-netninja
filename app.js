@@ -1,9 +1,8 @@
-
 // Exporting / Requiring modules
 
 // const counter = ((arr) => {
 //   return 'There are' + arr.length + 'elements'
-// }); 
+// });
 
 // const adder = ((a,b) => {
 //   return `The sum of 2 numbers is ${a+b}`
@@ -18,14 +17,14 @@
 
 // module.exports.counter= ((arr) => {
 //   return 'There are' + arr.length + 'elements'
-// }); 
+// });
 
 // module.exports.adder = ((a,b) => {
 //   return `The sum of 2 numbers is ${a+b}`
 // })
 
 // module.exports.pi =3.142;
- 
+
 // Creating a server
 // const http = require('http');
 // const PORT = 5000;
@@ -48,7 +47,7 @@
 // const myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
 // myReadStream.on('data', function(chunk) {
 //   console.log('new chunk recieved' );
-//   console.log(chunk); 
+//   console.log(chunk);
 // });
 
 // const http = require('http');
@@ -62,8 +61,6 @@
 //   console.log(chunk);
 //   myWriteSream.write(chunk);
 // })
-
-
 
 //  Transfering data/html file to server us
 
@@ -81,12 +78,10 @@
 // server.listen(6000, '127.0.0.1');
 // console.log('Now Listening');
 
-
 // serving JSON data
 
-// const http = require('http'); 
+// const http = require('http');
 // const fs = require('fs');
-
 
 // const server = http.createServer(function(req,res)  {
 // console.log('Request was made:' + req.url);
@@ -119,7 +114,7 @@
 // }else if (req.url === 'api/ninja'){
 //   const ninja = [{name: 'musa', age: 23}, {name: 'yoshi', age : 34}]
 //   res.writeHead(200,{'Content-Type' : 'application/json'})
-  
+
 //   res.end(JSON.stringify(ninja))
 // } else {
 //   res.writeHead(404, {'Content-Type' : 'text/html'});
@@ -131,10 +126,13 @@
 // server.listen(6000, '127.0.0.1');
 // console.log('Now Listening');
 
-// EXPRESS 
+// EXPRESS
 
-const express = require ('express');
+const express = require("express");
 require("dotenv").config();
+
+// this enables us to use routing functionality with express
+const router = express.Router();
 
 const app = express();
 const PORT = process.env.PORT;
@@ -142,22 +140,53 @@ const PORT = process.env.PORT;
 const password = process.env.PASSWORD;
 
 // Using the ejs template of express
-app.set ('view engine', 'ejs')
+
+app.set("view engine", "ejs");
+
+// Including style.css
+app.use('/assets', express.static('assets'));
+
 // sending html files
- app.get('/',function(req,res) {
-  res.sendFile('__dirname' + '/index.html');
-
- });
-
-// Routing Parameters with Express
-app.get('/profile/:name', function (req,res) {
-  // res.send('This is a request to se profile with name' + req.params.name)
-  const data = {age: 56, job: 'ninja'};
-  res.render('/profile', {person: req.params.name, data: data});
+app.get("/", function (req, res, next) {
+  const city = "Kyazanga";
+  res.render("index", { city });
 });
 
+app.get("/contact", function (req, res) {
+  res.render("contact", {qs: req.query});
+});
 
- app.listen(PORT,()=>{
-  console.log(`Listening to Port ${PORT}` )
- });
+//Routing Parameters with Express
+app.get("/profile", function (req, res) {
+  // res.send('This is a request to set profile with name' + req.params.name)
+  const data = { age: 56, job: "ninja", hobbies: ["fishing,soccer,reading"] };
+  const newUser = "Nansikombi";
+  res.render("profile", {
+    person: req.params.name,
+    data: data,
+    newUser: newUser,
+  });
+});
 
+app.get("/profile/:name", function (req, res) {
+  // res.send('This is a request to set profile with name' + req.params.name)
+  const data = { age: 56, job: "ninja", hobbies: ["fishing,soccer,reading"] };
+  res.render("profile", { person: req.params.name, data });
+});
+
+app.get("/api/user", (req, res) => {
+  const user = {
+    name: "Muzamiru",
+    age: 68,
+    location: "Lyantonde",
+  };
+  res.json(user);
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen(PORT, () => {
+  console.log(`Listening to Port ${PORT}`);
+});
